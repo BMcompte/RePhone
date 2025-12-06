@@ -1,0 +1,640 @@
+<!DOCTYPE html>
+<html lang="fr">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Rephone - iPhone Reconditionnés Premium</title>
+    <style>
+        * {
+            margin: 0;
+            padding: 0;
+            box-sizing: border-box;
+        }
+
+        body {
+            font-family: -apple-system, BlinkMacSystemFont, 'Segoe UI', Roboto, Oxygen, Ubuntu, Cantarell, sans-serif;
+            background: linear-gradient(135deg, #667eea 0%, #764ba2 100%);
+            min-height: 100vh;
+            padding: 20px;
+        }
+
+        .container {
+            max-width: 1400px;
+            margin: 0 auto;
+        }
+
+        header {
+            text-align: center;
+            color: white;
+            margin-bottom: 50px;
+            animation: fadeInDown 0.8s ease;
+        }
+
+        header h1 {
+            font-size: 3.5em;
+            margin-bottom: 10px;
+            text-shadow: 2px 2px 4px rgba(0,0,0,0.3);
+        }
+
+        header p {
+            font-size: 1.3em;
+            opacity: 0.95;
+        }
+
+        .products-grid {
+            display: grid;
+            grid-template-columns: repeat(auto-fit, minmax(320px, 1fr));
+            gap: 30px;
+            margin-bottom: 50px;
+        }
+
+        .product-card {
+            background: rgba(255, 255, 255, 0.95);
+            backdrop-filter: blur(10px);
+            border-radius: 20px;
+            padding: 30px;
+            box-shadow: 0 20px 60px rgba(0,0,0,0.3);
+            transition: transform 0.3s ease, box-shadow 0.3s ease;
+            animation: fadeInUp 0.8s ease;
+        }
+
+        .product-card:hover {
+            transform: translateY(-10px);
+            box-shadow: 0 30px 80px rgba(0,0,0,0.4);
+        }
+
+        .product-image {
+            width: 100%;
+            height: 300px;
+            background: linear-gradient(135deg, #f5f7fa 0%, #c3cfe2 100%);
+            border-radius: 15px;
+            display: flex;
+            align-items: center;
+            justify-content: center;
+            margin-bottom: 20px;
+            position: relative;
+            overflow: hidden;
+        }
+
+        .product-image::before {
+            content: '';
+            position: absolute;
+            width: 200px;
+            height: 200px;
+            background: rgba(255,255,255,0.3);
+            border-radius: 50%;
+            animation: pulse 2s infinite;
+        }
+
+        .product-image span {
+            font-size: 6em;
+            z-index: 1;
+        }
+
+        .product-title {
+            font-size: 1.8em;
+            font-weight: 700;
+            margin-bottom: 10px;
+            color: #2d3748;
+        }
+
+        .product-subtitle {
+            color: #718096;
+            margin-bottom: 15px;
+            font-size: 0.95em;
+        }
+
+        .grades {
+            display: flex;
+            gap: 10px;
+            margin-bottom: 20px;
+            flex-wrap: wrap;
+        }
+
+        .grade-badge {
+            padding: 8px 16px;
+            border-radius: 20px;
+            font-size: 0.85em;
+            font-weight: 600;
+            cursor: pointer;
+            transition: all 0.3s ease;
+            border: 2px solid transparent;
+        }
+
+        .grade-badge.aplus {
+            background: linear-gradient(135deg, #f093fb 0%, #f5576c 100%);
+            color: white;
+        }
+
+        .grade-badge.a {
+            background: linear-gradient(135deg, #4facfe 0%, #00f2fe 100%);
+            color: white;
+        }
+
+        .grade-badge.bplus {
+            background: linear-gradient(135deg, #43e97b 0%, #38f9d7 100%);
+            color: white;
+        }
+
+        .grade-badge.b {
+            background: linear-gradient(135deg, #fa709a 0%, #fee140 100%);
+            color: white;
+        }
+
+        .grade-badge:hover {
+            transform: scale(1.05);
+            border-color: #2d3748;
+        }
+
+        .price {
+            font-size: 2em;
+            font-weight: 800;
+            color: #667eea;
+            margin: 20px 0;
+        }
+
+        .features {
+            list-style: none;
+            margin-bottom: 20px;
+        }
+
+        .features li {
+            padding: 8px 0;
+            color: #4a5568;
+            font-size: 0.9em;
+        }
+
+        .features li::before {
+            content: "✓ ";
+            color: #48bb78;
+            font-weight: bold;
+            margin-right: 8px;
+        }
+
+        .add-to-cart {
+            width: 100%;
+            padding: 15px;
+            background: linear-gradient(135deg, #667eea 0%, #764ba2 100%);
+            color: white;
+            border: none;
+            border-radius: 10px;
+            font-size: 1.1em;
+            font-weight: 600;
+            cursor: pointer;
+            transition: all 0.3s ease;
+            margin-bottom: 10px;
+        }
+
+        .add-to-cart:hover {
+            transform: scale(1.02);
+            box-shadow: 0 10px 30px rgba(102, 126, 234, 0.4);
+        }
+
+        .cart-panel {
+            position: fixed;
+            right: -400px;
+            top: 0;
+            width: 400px;
+            height: 100vh;
+            background: white;
+            box-shadow: -5px 0 30px rgba(0,0,0,0.3);
+            transition: right 0.3s ease;
+            z-index: 1000;
+            overflow-y: auto;
+            padding: 30px;
+        }
+
+        .cart-panel.open {
+            right: 0;
+        }
+
+        .cart-toggle {
+            position: fixed;
+            top: 20px;
+            right: 20px;
+            background: white;
+            color: #667eea;
+            border: none;
+            padding: 15px 25px;
+            border-radius: 50px;
+            font-size: 1.1em;
+            font-weight: 600;
+            cursor: pointer;
+            box-shadow: 0 10px 30px rgba(0,0,0,0.2);
+            z-index: 999;
+            transition: all 0.3s ease;
+        }
+
+        .cart-toggle:hover {
+            transform: scale(1.05);
+        }
+
+        .cart-item {
+            padding: 15px;
+            border-bottom: 1px solid #e2e8f0;
+            margin-bottom: 15px;
+        }
+
+        .cart-item h4 {
+            color: #2d3748;
+            margin-bottom: 5px;
+        }
+
+        .cart-item p {
+            color: #718096;
+            font-size: 0.9em;
+        }
+
+        .cart-total {
+            font-size: 1.8em;
+            font-weight: 700;
+            color: #2d3748;
+            margin: 30px 0;
+            padding-top: 20px;
+            border-top: 2px solid #e2e8f0;
+        }
+
+        .payment-buttons {
+            display: flex;
+            flex-direction: column;
+            gap: 15px;
+        }
+
+        .payment-btn {
+            padding: 15px;
+            border: none;
+            border-radius: 10px;
+            font-size: 1.1em;
+            font-weight: 600;
+            cursor: pointer;
+            transition: all 0.3s ease;
+            display: flex;
+            align-items: center;
+            justify-content: center;
+            gap: 10px;
+        }
+
+        .paypal-btn {
+            background: #0070ba;
+            color: white;
+        }
+
+        .stripe-btn {
+            background: #635bff;
+            color: white;
+        }
+
+        .payment-btn:hover {
+            transform: scale(1.02);
+            box-shadow: 0 10px 30px rgba(0,0,0,0.2);
+        }
+
+        .close-cart {
+            position: absolute;
+            top: 20px;
+            right: 20px;
+            background: none;
+            border: none;
+            font-size: 2em;
+            cursor: pointer;
+            color: #718096;
+        }
+
+        .grade-info {
+            background: #f7fafc;
+            padding: 20px;
+            border-radius: 10px;
+            margin-top: 30px;
+        }
+
+        .grade-info h3 {
+            color: #2d3748;
+            margin-bottom: 15px;
+        }
+
+        .grade-info ul {
+            list-style: none;
+        }
+
+        .grade-info li {
+            padding: 8px 0;
+            color: #4a5568;
+            font-size: 0.9em;
+        }
+
+        @keyframes fadeInDown {
+            from {
+                opacity: 0;
+                transform: translateY(-30px);
+            }
+            to {
+                opacity: 1;
+                transform: translateY(0);
+            }
+        }
+
+        @keyframes fadeInUp {
+            from {
+                opacity: 0;
+                transform: translateY(30px);
+            }
+            to {
+                opacity: 1;
+                transform: translateY(0);
+            }
+        }
+
+        @keyframes pulse {
+            0%, 100% {
+                transform: scale(1);
+                opacity: 0.3;
+            }
+            50% {
+                transform: scale(1.1);
+                opacity: 0.5;
+            }
+        }
+
+        .notification {
+            position: fixed;
+            top: 100px;
+            right: 20px;
+            background: #48bb78;
+            color: white;
+            padding: 20px 30px;
+            border-radius: 10px;
+            box-shadow: 0 10px 30px rgba(0,0,0,0.3);
+            z-index: 1001;
+            opacity: 0;
+            transform: translateX(400px);
+            transition: all 0.3s ease;
+        }
+
+        .notification.show {
+            opacity: 1;
+            transform: translateX(0);
+        }
+
+        @media (max-width: 768px) {
+            header h1 {
+                font-size: 2.5em;
+            }
+            
+            .cart-panel {
+                width: 100%;
+                right: -100%;
+            }
+            
+            .products-grid {
+                grid-template-columns: 1fr;
+            }
+        }
+    </style>
+</head>
+<body>
+    <div class="container">
+        <header>
+            <h1>📱 Rephone</h1>
+            <p>iPhone Reconditionnés Premium - Grade A++ à B - Garantie 12 mois</p>
+        </header>
+
+        <button class="cart-toggle" onclick="toggleCart()">
+            🛒 Panier (<span id="cart-count">0</span>)
+        </button>
+
+        <div class="products-grid">
+            <!-- iPhone 16 -->
+            <div class="product-card">
+                <div class="product-image">
+                    <span>📱</span>
+                </div>
+                <h3 class="product-title">iPhone 16</h3>
+                <p class="product-subtitle">Le dernier né d'Apple - 2024</p>
+                <div class="grades">
+                    <span class="grade-badge aplus" onclick="selectGrade(this, 16, 849)">A++ - 849€</span>
+                    <span class="grade-badge a" onclick="selectGrade(this, 16, 799)">A - 799€</span>
+                    <span class="grade-badge bplus" onclick="selectGrade(this, 16, 749)">B+ - 749€</span>
+                    <span class="grade-badge b" onclick="selectGrade(this, 16, 699)">B - 699€</span>
+                </div>
+                <div class="price">849€</div>
+                <ul class="features">
+                    <li>Puce A18 ultra-performante</li>
+                    <li>Écran Super Retina XDR 6.1"</li>
+                    <li>Double caméra 48MP</li>
+                    <li>5G & Wi-Fi 6E</li>
+                    <li>Batterie longue durée</li>
+                </ul>
+                <button class="add-to-cart" onclick="addToCart('iPhone 16', 849, 'A++')">Ajouter au panier</button>
+            </div>
+
+            <!-- iPhone 15 -->
+            <div class="product-card">
+                <div class="product-image">
+                    <span>📱</span>
+                </div>
+                <h3 class="product-title">iPhone 15</h3>
+                <p class="product-subtitle">Dynamic Island & USB-C</p>
+                <div class="grades">
+                    <span class="grade-badge aplus" onclick="selectGrade(this, 15, 699)">A++ - 699€</span>
+                    <span class="grade-badge a" onclick="selectGrade(this, 15, 649)">A - 649€</span>
+                    <span class="grade-badge bplus" onclick="selectGrade(this, 15, 599)">B+ - 599€</span>
+                    <span class="grade-badge b" onclick="selectGrade(this, 15, 549)">B - 549€</span>
+                </div>
+                <div class="price">699€</div>
+                <ul class="features">
+                    <li>Puce A16 Bionic</li>
+                    <li>Dynamic Island</li>
+                    <li>Caméra principale 48MP</li>
+                    <li>Port USB-C</li>
+                    <li>Design en aluminium</li>
+                </ul>
+                <button class="add-to-cart" onclick="addToCart('iPhone 15', 699, 'A++')">Ajouter au panier</button>
+            </div>
+
+            <!-- iPhone 14 -->
+            <div class="product-card">
+                <div class="product-image">
+                    <span>📱</span>
+                </div>
+                <h3 class="product-title">iPhone 14</h3>
+                <p class="product-subtitle">Performance et fiabilité</p>
+                <div class="grades">
+                    <span class="grade-badge aplus" onclick="selectGrade(this, 14, 549)">A++ - 549€</span>
+                    <span class="grade-badge a" onclick="selectGrade(this, 14, 499)">A - 499€</span>
+                    <span class="grade-badge bplus" onclick="selectGrade(this, 14, 449)">B+ - 449€</span>
+                    <span class="grade-badge b" onclick="selectGrade(this, 14, 399)">B - 399€</span>
+                </div>
+                <div class="price">549€</div>
+                <ul class="features">
+                    <li>Puce A15 Bionic</li>
+                    <li>Écran Super Retina XDR</li>
+                    <li>Double caméra 12MP</li>
+                    <li>Mode Cinématique</li>
+                    <li>Résistance à l'eau IP68</li>
+                </ul>
+                <button class="add-to-cart" onclick="addToCart('iPhone 14', 549, 'A++')">Ajouter au panier</button>
+            </div>
+
+            <!-- iPhone 13 -->
+            <div class="product-card">
+                <div class="product-image">
+                    <span>📱</span>
+                </div>
+                <h3 class="product-title">iPhone 13</h3>
+                <p class="product-subtitle">Le best-seller reconditionné</p>
+                <div class="grades">
+                    <span class="grade-badge aplus" onclick="selectGrade(this, 13, 449)">A++ - 449€</span>
+                    <span class="grade-badge a" onclick="selectGrade(this, 13, 399)">A - 399€</span>
+                    <span class="grade-badge bplus" onclick="selectGrade(this, 13, 349)">B+ - 349€</span>
+                    <span class="grade-badge b" onclick="selectGrade(this, 13, 299)">B - 299€</span>
+                </div>
+                <div class="price">449€</div>
+                <ul class="features">
+                    <li>Puce A15 Bionic</li>
+                    <li>Écran OLED 6.1"</li>
+                    <li>Double caméra avancée</li>
+                    <li>5G ultra-rapide</li>
+                    <li>Autonomie excellente</li>
+                </ul>
+                <button class="add-to-cart" onclick="addToCart('iPhone 13', 449, 'A++')">Ajouter au panier</button>
+            </div>
+
+            <!-- iPhone 12 -->
+            <div class="product-card">
+                <div class="product-image">
+                    <span>📱</span>
+                </div>
+                <h3 class="product-title">iPhone 12</h3>
+                <p class="product-subtitle">Premier iPhone 5G</p>
+                <div class="grades">
+                    <span class="grade-badge aplus" onclick="selectGrade(this, 12, 349)">A++ - 349€</span>
+                    <span class="grade-badge a" onclick="selectGrade(this, 12, 299)">A - 299€</span>
+                    <span class="grade-badge bplus" onclick="selectGrade(this, 12, 249)">B+ - 249€</span>
+                    <span class="grade-badge b" onclick="selectGrade(this, 12, 199)">B - 199€</span>
+                </div>
+                <div class="price">349€</div>
+                <ul class="features">
+                    <li>Puce A14 Bionic</li>
+                    <li>Design Ceramic Shield</li>
+                    <li>Double caméra 12MP</li>
+                    <li>Connectivité 5G</li>
+                    <li>MagSafe compatible</li>
+                </ul>
+                <button class="add-to-cart" onclick="addToCart('iPhone 12', 349, 'A++')">Ajouter au panier</button>
+            </div>
+        </div>
+
+        <div class="grade-info">
+            <h3>📊 Guide des Grades de Reconditionnement</h3>
+            <ul>
+                <li><strong>Grade A++:</strong> État neuf ou quasi-neuf, aucune trace visible, batterie 100%</li>
+                <li><strong>Grade A:</strong> Excellent état, micro-rayures invisibles, batterie ≥ 90%</li>
+                <li><strong>Grade B+:</strong> Très bon état, quelques micro-rayures, batterie ≥ 85%</li>
+                <li><strong>Grade B:</strong> Bon état, traces d'usage légères, batterie ≥ 80%</li>
+            </ul>
+        </div>
+    </div>
+
+    <div class="cart-panel" id="cartPanel">
+        <button class="close-cart" onclick="toggleCart()">×</button>
+        <h2>🛒 Votre Panier</h2>
+        <div id="cart-items"></div>
+        <div class="cart-total">
+            Total: <span id="total-price">0€</span>
+        </div>
+        <div class="payment-buttons">
+            <button class="payment-btn paypal-btn" onclick="processPayment('PayPal')">
+                💳 Payer avec PayPal
+            </button>
+            <button class="payment-btn stripe-btn" onclick="processPayment('Stripe')">
+                💳 Payer avec Stripe
+            </button>
+        </div>
+    </div>
+
+    <div class="notification" id="notification">
+        ✓ Produit ajouté au panier !
+    </div>
+
+    <script>
+        let cart = [];
+        let selectedGrades = {};
+
+        function selectGrade(element, model, price) {
+            const card = element.closest('.product-card');
+            const badges = card.querySelectorAll('.grade-badge');
+            badges.forEach(b => b.style.border = '2px solid transparent');
+            element.style.border = '2px solid #2d3748';
+            
+            const priceElement = card.querySelector('.price');
+            priceElement.textContent = price + '€';
+            
+            const gradeText = element.textContent.split(' - ')[0];
+            const button = card.querySelector('.add-to-cart');
+            button.setAttribute('onclick', `addToCart('iPhone ${model}', ${price}, '${gradeText}')`);
+            
+            selectedGrades[model] = { grade: gradeText, price: price };
+        }
+
+        function addToCart(product, price, grade) {
+            cart.push({ product, price, grade });
+            updateCart();
+            showNotification();
+        }
+
+        function updateCart() {
+            const cartItems = document.getElementById('cart-items');
+            const cartCount = document.getElementById('cart-count');
+            const totalPrice = document.getElementById('total-price');
+            
+            cartItems.innerHTML = '';
+            let total = 0;
+            
+            cart.forEach((item, index) => {
+                total += item.price;
+                cartItems.innerHTML += `
+                    <div class="cart-item">
+                        <h4>${item.product} - Grade ${item.grade}</h4>
+                        <p>${item.price}€</p>
+                        <button onclick="removeFromCart(${index})" style="background: #f56565; color: white; border: none; padding: 5px 15px; border-radius: 5px; cursor: pointer;">Supprimer</button>
+                    </div>
+                `;
+            });
+            
+            cartCount.textContent = cart.length;
+            totalPrice.textContent = total + '€';
+        }
+
+        function removeFromCart(index) {
+            cart.splice(index, 1);
+            updateCart();
+        }
+
+        function toggleCart() {
+            const panel = document.getElementById('cartPanel');
+            panel.classList.toggle('open');
+        }
+
+        function showNotification() {
+            const notification = document.getElementById('notification');
+            notification.classList.add('show');
+            setTimeout(() => {
+                notification.classList.remove('show');
+            }, 2000);
+        }
+
+        function processPayment(method) {
+            if (cart.length === 0) {
+                alert('Votre panier est vide !');
+                return;
+            }
+            
+            alert(`Redirection vers ${method} pour un paiement de ${document.getElementById('total-price').textContent}...\n\n(En production, ceci redirigerait vers la vraie plateforme de paiement)`);
+            
+            // En production, vous intégreriez ici les vraies API:
+            // PayPal: https://developer.paypal.com/
+            // Stripe: https://stripe.com/docs/api
+        }
+    </script>
+</body>
+</html>
