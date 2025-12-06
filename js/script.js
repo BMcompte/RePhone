@@ -1,10 +1,11 @@
 // Product data (editable)
+// Using Unsplash source images (free). Replace with your assets/images/* paths for production.
 const products = [
-  { id: 'iphone-12', name: 'iPhone 12', img: 'https://via.placeholder.com/600x400?text=iPhone+12', prices: { '64': 199, '128': 249, '256': 299 } },
-  { id: 'iphone-13', name: 'iPhone 13', img: 'https://via.placeholder.com/600x400?text=iPhone+13', prices: { '64': 299, '128': 349, '256': 399 } },
-  { id: 'iphone-14', name: 'iPhone 14', img: 'https://via.placeholder.com/600x400?text=iPhone+14', prices: { '64': 399, '128': 449, '256': 499 } },
-  { id: 'iphone-15', name: 'iPhone 15', img: 'https://via.placeholder.com/600x400?text=iPhone+15', prices: { '64': 549, '128': 599, '256': 649 } },
-  { id: 'iphone-16', name: 'iPhone 16', img: 'https://via.placeholder.com/600x400?text=iPhone+16', prices: { '64': 699, '128': 749, '256': 799 } }
+  { id: 'iphone-12', name: 'iPhone 12 — Reconditionné', img: 'https://source.unsplash.com/800x600/?iphone,12', prices: { '64': 199, '128': 249, '256': 299 }, condition: 'Très bon état', warranty: '12 mois' },
+  { id: 'iphone-13', name: 'iPhone 13 — Reconditionné', img: 'https://source.unsplash.com/800x600/?iphone,13', prices: { '64': 299, '128': 349, '256': 399 }, condition: 'Très bon état', warranty: '12 mois' },
+  { id: 'iphone-14', name: 'iPhone 14 — Reconditionné', img: 'https://source.unsplash.com/800x600/?iphone,14', prices: { '64': 399, '128': 449, '256': 499 }, condition: 'Excellent état', warranty: '12 mois' },
+  { id: 'iphone-15', name: 'iPhone 15 — Reconditionné', img: 'https://source.unsplash.com/800x600/?iphone,15', prices: { '64': 549, '128': 599, '256': 649 }, condition: 'Excellent état', warranty: '12 mois' },
+  { id: 'iphone-16', name: 'iPhone 16 — Reconditionné', img: 'https://source.unsplash.com/800x600/?iphone,16', prices: { '64': 699, '128': 749, '256': 799 }, condition: 'Neuf reconditionné', warranty: '12 mois' }
 ];
 
 function formatPrice(n){ return new Intl.NumberFormat('fr-FR', { style:'currency', currency:'EUR' }).format(n); }
@@ -16,12 +17,18 @@ function renderProducts(){
     const card = document.createElement('article');
     card.className = 'card';
 
+    const media = document.createElement('div'); media.className = 'card-media';
     const img = document.createElement('img'); img.src = prod.img; img.alt = prod.name;
-    card.appendChild(img);
+    media.appendChild(img);
+    const badge = document.createElement('div'); badge.className = 'badge'; badge.textContent = 'Reconditionné';
+    media.appendChild(badge);
+    card.appendChild(media);
 
     const body = document.createElement('div'); body.className = 'card-body';
 
     const title = document.createElement('h3'); title.className = 'card-title'; title.textContent = prod.name; body.appendChild(title);
+
+    const meta = document.createElement('div'); meta.className = 'meta'; meta.textContent = prod.condition + ' • Garantie: ' + prod.warranty; body.appendChild(meta);
 
     const variants = document.createElement('div'); variants.className = 'variants';
     const select = document.createElement('select'); select.className = 'select';
@@ -86,9 +93,7 @@ modalClose.addEventListener('click', closeModal);
 modal.addEventListener('click', (e) =>{ if (e.target === modal) closeModal(); });
 
 function renderPayPalButtons(amount){
-  // amount is a number (EUR)
   const amountStr = amount.toFixed(2);
-  // Ensure container is empty
   paypalArea.innerHTML = '';
 
   paypal.Buttons({
@@ -101,8 +106,7 @@ function renderPayPalButtons(amount){
     onApprove: function(data, actions){
       return actions.order.capture().then(function(details){
         closeModal();
-        alert('Paiement réussi — Merci, ' + (details.payer.name && details.payer.name.given_name ? details.payer.name.given_name : '') + '!');
-        // TODO: enregistrer la commande côté serveur si nécessaire
+        alert('Paiement réussi — Merci, ' + (details.payer && details.payer.name && details.payer.name.given_name ? details.payer.name.given_name : '') + '!');
       });
     },
     onError: function(err){

@@ -5,24 +5,35 @@
   <meta name="viewport" content="width=device-width, initial-scale=1">
   <title>RePhone — iPhone reconditionnés</title>
   <link rel="stylesheet" href="css/style.css">
-  <!-- Replace REPLACE_WITH_PAYPAL_CLIENT_ID in the line below with your PayPal client ID -->
+  <!-- Replace REPLACE_WITH_PAYPAL_CLIENT_ID with your PayPal Client ID -->
   <script src="https://www.paypal.com/sdk/js?client-id=REPLACE_WITH_PAYPAL_CLIENT_ID&currency=EUR" data-sdk-integration-source="button-factory"></script>
 </head>
 <body>
   <header class="site-header">
-    <div class="container">
-      <h1>RePhone</h1>
-      <p class="tag">iPhone reconditionnés — Paiement sécurisé via PayPal</p>
+    <div class="container header-inner">
+      <div class="brand">
+        <h1>RePhone</h1>
+        <p class="tag">iPhone reconditionnés — Paiement sécurisé via PayPal</p>
+      </div>
+      <nav class="nav">
+        <a class="nav-link" href="#">Boutique</a>
+        <a class="nav-link" href="#contact">Contact</a>
+      </nav>
     </div>
   </header>
 
   <main class="container">
     <section class="intro">
       <h2>Nos modèles disponibles</h2>
-      <p>iPhone 12, 13, 14, 15, 16 — Capacités : 64 Go / 128 Go / 256 Go. Tous les prix en EUR. Images placeholders : remplacez par vos photos dans <code>assets/images/</code>.</p>
+      <p>iPhone 12, 13, 14, 15, 16 — Capacités : 64 Go / 128 Go / 256 Go. Tous les prix en EUR. Images libres (Unsplash) : remplacez-les par vos photos dans <code>assets/images/</code> si vous le souhaitez.</p>
     </section>
 
-    <section id="products-grid" class="grid"></section>
+    <section id="products-grid" class="grid" aria-live="polite"></section>
+
+    <section id="contact" class="contact">
+      <h3>Besoin d'aide ?</h3>
+      <p>Contactez-nous à <strong>contact@rephone.example</strong> (placeholder). Nous pouvons ajouter d'autres marques et accessoires sur demande.</p>
+    </section>
   </main>
 
   <!-- Modal for PayPal buttons -->
@@ -35,8 +46,14 @@
   </div>
 
   <footer class="site-footer">
-    <div class="container">
-      <p>© RePhone — Vente d'appareils reconditionnés. Mentions légales et conditions de vente à ajouter.</p>
+    <div class="container footer-inner">
+      <div>
+        <p>© RePhone — Vente d'appareils reconditionnés. Mentions légales et conditions de vente à ajouter.</p>
+      </div>
+      <div class="footer-links">
+        <a href="#">Politique de retour</a>
+        <a href="#">Garantie</a>
+      </div>
     </div>
   </footer>
 
